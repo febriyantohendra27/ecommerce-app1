@@ -5,8 +5,8 @@ cat .env
 set +a
 source .env
 start=$(date +"%s")
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
-docker pull $AWS_ECR_REPOSITORY:$IMAGE_TAG
+echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
+docker pull $CONTAINER_REPOSITORY:$IMAGE_TAG
 
 if [ "$(docker ps -qa -f name=$CONTAINER_NAME)" ]; then
     if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
@@ -17,7 +17,8 @@ if [ "$(docker ps -qa -f name=$CONTAINER_NAME)" ]; then
     fi
 fi
 
-docker run -d --restart unless-stopped -p $APP_PORT:$APP_PORT --env-file .env --name $CONTAINER_NAME  -e SPRING_PROFILES_ACTIVE=github $AWS_ECR_REPOSITORY:$IMAGE_TAG
+docker run -d --restart unless-stopped -p $APP_PORT:$APP_PORT --env-file .env --name $CONTAINER_NAME  $CONTAINER_REPOSITORY:$IMAGE_TAG
+# $CONTAINER_REPOSITORY = hendisantika/ecommerce
 docker ps
 exit
 ENDSSH

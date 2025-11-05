@@ -17,7 +17,7 @@ RUN mvn clean package -DskipTests
 # Stage 2: Runtime
 FROM amazoncorretto:25-alpine
 
-LABEL maintainer="hendisantika@yahoo.co.id"
+LABEL maintainer="ferbriyantohendra27@gmail.com"
 LABEL description="E-Commerce Application - Spring Boot"
 LABEL version="1.0.0"
 

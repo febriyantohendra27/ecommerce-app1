@@ -18,7 +18,7 @@ if [ "$(docker ps -qa -f name=$CONTAINER_NAME)" ]; then
 fi
 
 docker run -d --restart unless-stopped -p $APP_PORT:$APP_PORT --env-file .env --name $CONTAINER_NAME  $CONTAINER_REPOSITORY:$IMAGE_TAG
-# $CONTAINER_REPOSITORY = hendisantika/ecommerce
+# $CONTAINER_REPOSITORY = sanzss52/ecommerce
 docker ps
 exit
 ENDSSH

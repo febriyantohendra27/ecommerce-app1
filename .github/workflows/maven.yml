@@ -115,30 +115,30 @@ jobs:
           docker build . --tag $IMAGE_NAME:$TAG
           docker push $IMAGE_NAME:$TAG
 
-  push-to-ecr:
-    runs-on: ubuntu-latest
-    needs: project-build
-    env:
-      IMAGE_TAG: ${{ github.run_number }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+  # push-to-ecr:
+  #   runs-on: ubuntu-latest
+  #   needs: project-build
+  #   env:
+  #     IMAGE_TAG: ${{ github.run_number }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v5
 
-      - run: docker build -t ecommerce:$IMAGE_TAG -f Dockerfile .
+  #     - run: docker build -t ecommerce:$IMAGE_TAG -f Dockerfile .
 
-      - name: Push to ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{vars.AWS_ECR_REPO}}
-          IMAGE_TAG: ${{ github.run_number }}
-        id: ecr
-        uses: jwalton/gh-ecr-push@v2
-        with:
-          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
-          region: ${{ vars.AWS_REGION }}
-          local-image: ecommerce:$IMAGE_TAG
-          image: ecommerce:$IMAGE_TAG
+  #     - name: Push to ECR
+  #       env:
+  #         ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+  #         ECR_REPOSITORY: ${{vars.AWS_ECR_REPO}}
+  #         IMAGE_TAG: ${{ github.run_number }}
+  #       id: ecr
+  #       uses: jwalton/gh-ecr-push@v2
+  #       with:
+  #         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+  #         region: ${{ vars.AWS_REGION }}
+  #         local-image: ecommerce:$IMAGE_TAG
+  #         image: ecommerce:$IMAGE_TAG
 
   deploy:
     needs: push-to-ecr
